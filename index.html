@@ -9,13 +9,19 @@
 
 <h2>Student Manager</h2>
 
-<div class="form">
+<div class="top-bar">
+  <input type="text" id="search" placeholder="Search by ID or Name">
+  <button onclick="searchData()">Search</button>
+  <button onclick="showAddForm()">Add Student</button>
+</div>
+
+<div id="formContainer" class="hidden">
+  <h3 id="formTitle">Add Student</h3>
   <input type="number" id="id" placeholder="ID">
   <input type="text" id="name" placeholder="Name">
   <input type="number" id="age" placeholder="Age">
-  <button onclick="createData()">Create</button>
-  <button onclick="updateData()">Update</button>
-  <button onclick="deleteData()">Delete</button>
+  <button onclick="submitForm()">Save</button>
+  <button onclick="hideForm()">Cancel</button>
 </div>
 
 <hr>
@@ -26,6 +32,7 @@
       <th>ID</th>
       <th>Name</th>
       <th>Age</th>
+      <th>Action</th>
     </tr>
   </thead>
   <tbody></tbody>
