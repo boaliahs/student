@@ -1,50 +1,95 @@
 const API_URL = "https://script.google.com/macros/s/AKfycbwaFsPr9icZiHeXlGj31CAMJ0aZ0tbBdDPP0kxIM_nSEyfE-UcOZz5YsqcvZm8zTy5i6g/exec";
 
+let editMode = false;
+
 function loadData() {
   fetch(API_URL + "?action=read")
     .then(res => res.json())
-    .then(data => {
-      const tbody = document.querySelector("#table tbody");
-      tbody.innerHTML = "";
-
-      data.forEach(row => {
-        tbody.innerHTML += `
-          <tr>
-            <td>${row.ID}</td>
-            <td>${row.Name}</td>
-            <td>${row.Age}</td>
-          </tr>
-        `;
-      });
-    });
+    .then(data => renderTable(data));
 }
 
-function createData() {
-  sendData("create");
+function renderTable(data) {
+  const tbody = document.querySelector("#table tbody");
+  tbody.innerHTML = "";
+
+  data.forEach(row => {
+    tbody.innerHTML += `
+      <tr>
+        <td>${row.ID}</td>
+        <td>${row.Name}</td>
+        <td>${row.Age}</td>
+        <td>
+          <button onclick='editRow(${JSON.stringify(row)})'>✏️</button>
+          <button onclick='deleteRow(${row.ID})'>🗑️</button>
+        </td>
+      </tr>
+    `;
+  });
 }
 
-function updateData() {
-  sendData("update");
+function showAddForm() {
+  editMode = false;
+  document.getElementById("formTitle").innerText = "Add Student";
+  document.getElementById("id").value = "";
+  document.getElementById("name").value = "";
+  document.getElementById("age").value = "";
+  document.getElementById("formContainer").classList.remove("hidden");
 }
 
-function deleteData() {
-  const id = document.getElementById("id").value;
-
-  fetch(API_URL + "?action=delete", {
-    method: "POST",
-    body: JSON.stringify({ id })
-  }).then(() => loadData());
+function editRow(row) {
+  editMode = true;
+  document.getElementById("formTitle").innerText = "Update Student";
+  document.getElementById("id").value = row.ID;
+  document.getElementById("name").value = row.Name;
+  document.getElementById("age").value = row.Age;
+  document.getElementById("formContainer").classList.remove("hidden");
 }
 
-function sendData(action) {
+function hideForm() {
+  document.getElementById("formContainer").classList.add("hidden");
+}
+
+function submitForm() {
   const id = document.getElementById("id").value;
   const name = document.getElementById("name").value;
   const age = document.getElementById("age").value;
 
+  const action = editMode ? "update" : "create";
+
   fetch(API_URL + "?action=" + action, {
     method: "POST",
     body: JSON.stringify({ id, name, age })
-  }).then(() => loadData());
+  })
+  .then(res => res.json())
+  .then(() => {
+    hideForm();
+    loadData();
+  });
+}
+
+function deleteRow(id) {
+  if (!confirm("Are you sure?")) return;
+
+  fetch(API_URL + "?action=delete", {
+    method: "POST",
+    body: JSON.stringify({ id })
+  })
+  .then(res => res.json())
+  .then(() => loadData());
+}
+
+function searchData() {
+  const keyword = document.getElementById("search").value.toLowerCase();
+
+  fetch(API_URL + "?action=read")
+    .then(res => res.json())
+    .then(data => {
+      const filtered = data.filter(row =>
+        row.Name.toLowerCase().includes(keyword) ||
+        row.ID.toString().includes(keyword)
+      );
+      renderTable(filtered);
+    });
 }
 
 window.onload = loadData;
