@@ -98,4 +98,8 @@ function searchData() {
     });
 }
 
-window.onload = loadData;
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("addBtn").addEventListener("click", showAddForm);
+  document.getElementById("searchBtn").addEventListener("click", searchData);
+  loadData();
+});
