@@ -1,7 +1,11 @@
 body {
   font-family: Arial;
-  max-width: 800px;
+  max-width: 900px;
   margin: auto;
+}
+
+.top-bar {
+  margin-bottom: 15px;
 }
 
 input, button {
@@ -21,4 +25,14 @@ table {
 th, td {
   border: 1px solid #ddd;
   padding: 8px;
+}
+
+.hidden {
+  display: none;
+}
+
+#formContainer {
+  background: #f4f4f4;
+  padding: 15px;
+  margin-top: 10px;
 }
