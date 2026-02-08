@@ -16,10 +16,10 @@ function renderTable(data) {
     const tr = document.createElement("tr");
 
     tr.innerHTML = `
-      <td>${row.ID}</td>
-      <td>${row.Name}</td>
-      <td>${row.Age}</td>
-      <td>
+      <td align='center'>${row.ID}</td>
+      <td align='center'>${row.Name}</td>
+      <td align='center'>${row.Age}</td>
+      <td align='center'>
         <button class="edit-btn">✏️</button>
         <button class="delete-btn">🗑️</button>
       </td>
