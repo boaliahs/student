@@ -13,19 +13,25 @@ function renderTable(data) {
   tbody.innerHTML = "";
 
   data.forEach(row => {
-    tbody.innerHTML += `
-      <tr>
-        <td>${row.ID}</td>
-        <td>${row.Name}</td>
-        <td>${row.Age}</td>
-        <td>
-          <button onclick='editRow(${JSON.stringify(row)})'>✏️</button>
-          <button onclick='deleteRow(${row.ID})'>🗑️</button>
-        </td>
-      </tr>
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+      <td>${row.ID}</td>
+      <td>${row.Name}</td>
+      <td>${row.Age}</td>
+      <td>
+        <button class="edit-btn">✏️</button>
+        <button class="delete-btn">🗑️</button>
+      </td>
     `;
+
+    tr.querySelector(".edit-btn").onclick = () => editRow(row);
+    tr.querySelector(".delete-btn").onclick = () => deleteRow(row.ID);
+
+    tbody.appendChild(tr);
   });
 }
+
 
 function showAddForm() {
   editMode = false;
