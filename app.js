@@ -99,6 +99,7 @@ function searchData() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
+  loadData();
   document.getElementById("addBtn").addEventListener("click", showAddForm);
   document.getElementById("searchBtn").addEventListener("click", searchData);
   loadData();
